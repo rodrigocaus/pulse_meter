@@ -11,8 +11,6 @@
 
 double i;
 double oximeter;
-unsigned long sys_time;
-
 
 void setup() {
   Serial.begin(19200);
@@ -22,8 +20,8 @@ void setup() {
 }
 
 void loop() {
- //oximeter_voltage = 5.0*(analogRead(OXI_PIN)/1024.0);
- oximeter = cos(i)+1;
+ //oximeter = 5.0*(analogRead(OXI_PIN)/1024.0);
+ oximeter = max(2*cos(i), 0.5);
  Serial.println(oximeter);
  i += 0.1;
  if(i > 2*PI)
