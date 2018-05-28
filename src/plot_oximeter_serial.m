@@ -20,7 +20,6 @@ srl_flush(s1);
 
 
 y_read = double(ones(1, SAMPLES_TIMEOUT));
-count = 1;
 
 # Gerenciamento de plot
 plotHandle = plot(y_read);
@@ -36,15 +35,38 @@ xticklabels(num2cell(0:10));
 
 
 # Leitura continua até apertar a letra 'q'
+
+y_max = 0.0;
+tempo_anterior = 0.0;
+tempo_atual = time();
+medir_tempo = false;
+count = 1;
 press = "0";
+
 while ~isequal(press, "q")
 
 	y_read(count) = str2num(char(srl_read(s1, BYTES_READ)));
-	set(plotHandle,'YData', y_read);
+	set(plotHandle,"ydata", y_read);
+	drawnow;
+
+	if y_read(count) >= y_max
+		y_max = y_read(count);
+	elseif (y_read(count) >= 0.85*y_max) && (medir_tempo == false)
+		medir_tempo = true;
+	elseif (y_read(count) < 0.85*y_max) && (medir_tempo == true)
+		tempo_anterior = tempo_atual;
+		tempo_atual = time();
+		medir_tempo = false;
+	endif
+
+	printf("%3.0f\r", 60/(tempo_atual - tempo_anterior));
+
+
 	count = count+1;
 
 	# Volta para o inicio
 	if count >= SAMPLES_TIMEOUT
+		y_max = 0.0;
 		count = 1;
 	endif
 
