@@ -23,7 +23,7 @@ void loop() {
  //oximeter = 5.0*(analogRead(OXI_PIN)/1024.0);
  oximeter = max(2*cos(i), 0.5);
  Serial.println(oximeter);
- i += 0.1;
+ i += 0.08;
  if(i > 2*PI)
     i = 0;
  delay(10);
