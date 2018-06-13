@@ -51,15 +51,15 @@ while ~isequal(press, "q")
 
 	if y_read(count) >= y_max
 		y_max = y_read(count);
-	elseif (y_read(count) >= 0.85*y_max) && (medir_tempo == false)
+	elseif (y_read(count) >= 0.95*y_max) && (medir_tempo == false)
 		medir_tempo = true;
-	elseif (y_read(count) < 0.85*y_max) && (medir_tempo == true)
+	elseif (y_read(count) < 0.95*y_max) && (medir_tempo == true)
 		tempo_anterior = tempo_atual;
 		tempo_atual = time();
 		medir_tempo = false;
 	endif
 
-	printf("%3.0f\r", 60/(tempo_atual - tempo_anterior));
+	printf("%03.1f%s\t\r", 60/(tempo_atual - tempo_anterior), "     ");
 
 
 	count = count+1;
